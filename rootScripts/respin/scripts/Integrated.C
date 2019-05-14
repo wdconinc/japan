@@ -18,9 +18,9 @@ void Integrated(TString treename,
   // Check to make sure input arguments are okay.
   TTree* tree = (TTree*)gROOT->FindObject(treename);
   TPad* pad1 = new TPad("pad1","",0,0,1,1);
-  pad1->SetGridy(1);
   pad1->Draw();  
-
+  pad1->cd();
+  pad1->SetGridy();
   if(!tree) {
     cout << "Integrated: " << endl
 	 << "\t Input tree does not exist." << endl;
@@ -81,5 +81,5 @@ void Integrated(TString treename,
 
   graph->SetMarkerStyle(20);
   graph->Draw("AP");
-
+ 
 }
