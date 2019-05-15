@@ -1,9 +1,42 @@
-void CheckDeviceEventCut(TString strDeviceName, TString strPatternPrefix){
+// author: Tao Ye
+// date: 05-2019
+// description: Macro for checking device error event cuts
+void CheckDeviceEventCut(const char* device_name, const char* pattern_prefix);
+void CheckDeviceEventCut();
+
+
+void CheckDeviceEventCut(){
+
+  Int_t nbpm = vBPM.size();
+  Int_t nsam = vSAM.size();
+
+  TCanvas *c1 = new TCanvas("c1","c1",2400,600);
+  TString bpm_suffix[3]={"X","Y","WS"};
+  const char* pattern_prefix[3]={"diff_","diff_","asym_"};
+  TString bpm_channel;
+  for(int ibpm=0;ibpm<nbpm;ibpm++){
+    for(int ichannel =0;ichannel<3;ichannel++){
+      c1->cd();
+      bpm_channel = TString(vBPM[ibpm])+ bpm_suffix[ichannel];
+      CheckDeviceEventCut(bpm_channel.Data(),
+			  pattern_prefix[ichannel]);
+      plot_title = Form("run%d_check_EventCut_%s.png",
+			run_number,bpm_channel.Data());
+      c1->SaveAs(output_path+ plot_title);
+    }
+  } // end of BPM loop
+
+  for(int isam=0;isam<nsam;isam++){
+    c1->cd();
+    CheckDeviceEventCut(vSAM[isam],"asym_");
+    plot_title = Form("run%d_check_EventCut_%s.png",run_number,vSAM[isam]);
+    c1->SaveAs(output_path+ plot_title);
+  } // end of lumi loop
+}
+
+void CheckDeviceEventCut(const char* device_name, const char* pattern_prefix){
   gStyle->SetStatW(0.3);
   gStyle->SetStatH(0.3);
-
-  const char* device_name = strDeviceName.Data();
-  const char* pattern_prefix = strPatternPrefix.Data();
 
   TTree *evt = (TTree*)gROOT->FindObject("evt");
   TTree *mul = (TTree*)gROOT->FindObject("mul");

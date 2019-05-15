@@ -1,3 +1,7 @@
+// Device error code decoder Marco 
+// author : Tao Ye
+// date : 05-2019
+
 #include "TError.h"
 
 void DeviceErrorCounter(TString device){
@@ -8,7 +12,7 @@ void DeviceErrorCounter(TString device){
   pad1->SetGridx();
   pad1->Draw();
   pad1->cd();
-  gErrorIgnoreLevel = kWarning+1;   // shut up warnings;
+  gErrorIgnoreLevel = kInfo;   // shut up warnings;
   gStyle->SetOptStat(0);
 
   // Copied from japan/QwTypes.h 

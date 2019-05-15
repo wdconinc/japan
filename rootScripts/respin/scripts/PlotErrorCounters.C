@@ -1,14 +1,12 @@
+// author : Tao Ye
+// date : 05-2019
+// description: A script for error code plots 
+
 #include "DeviceErrorCounter.C"
 #include "ErrorFlagDecoder.C"
+#include "device_list.h"
 
-
-void PlotErrorCounters(Int_t run_number){
-  TString path = "./japanOutput/";
-  TString prefix = "prexRespin1";
-  TString file_name = Form("%s_%d.root",prefix.Data(),run_number);
-  TFile *rootfile = TFile::Open(path+file_name);
-
-  TString output_path = "./"; //Form("./summary/run%d/",run_number);
+void PlotErrorCounters(){
   TString plot_title;
 
   TCanvas* c1 = new TCanvas("c1","c1",1600,800);

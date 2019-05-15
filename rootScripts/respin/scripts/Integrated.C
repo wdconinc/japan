@@ -2,6 +2,7 @@
 //
 // Integrated.C
 //   Bryan Moffit - June 2005
+//
 // edited by Caryn Palatchi 3/2019 for japan
 //
 // edited by Tao Ye 5/2019 
@@ -9,6 +10,66 @@
 //  Provides a means to determine the convergence (or lack of) of
 //   a given parameter (branch of a tree) vs time.
 //
+
+#include "device_list.h"
+void Integrated(TString treename, 
+		TString parameter,
+		TString usercut,
+		UInt_t nbins); // interface to panguin
+
+void Integrated(); // interface to summary plots
+
+
+void Integrated(){
+  Int_t can_width = 600;
+  TCanvas *this_can;
+
+  Int_t nBPM = vDitherBPM.size();
+  this_can = new TCanvas("","",2*can_width,can_width);
+  this_can->Divide(2,1);
+
+  for(int ibpm=0;ibpm<nBPM;ibpm++){
+    this_can->cd(ibpm%2+1);
+    Integrated("mul",
+	       "diff_"+TString(vDitherBPM[ibpm]),
+	       "ErrorFlag==0",
+	       20);
+    if(ibpm%2==1){
+      plot_title = Form("run%d_integrated_convergence_%s_%s.png",
+			run_number,vDitherBPM[ibpm-1],vDitherBPM[ibpm]);
+      TText *label = new TText(0.0,0.01,plot_title);      
+      label->SetNDC();
+      this_can->cd();
+      label->Draw("same");
+      this_can->SaveAs(output_path+ plot_title);
+      this_can->Clear("D");
+    }
+  }
+
+  Int_t nSAM = vSAM.size();
+  for(int isam=0;isam<nSAM;isam++){
+    this_can->cd(isam%2+1);
+    Integrated("mul",
+	       "asym_"+TString(vSAM[isam]),
+	       "ErrorFlag==0",
+	       20);
+    if(isam%2==1){
+      plot_title = Form("run%d_integrated_convergence_%s_%s.png",
+			run_number,vSAM[isam-1],vSAM[isam]);
+      TText *label = new TText(0.0,0.01,plot_title);      
+      label->SetNDC();
+      this_can->cd();
+      label->Draw("same");
+      this_can->SaveAs(output_path+ plot_title);
+      this_can->Clear("D");
+    }
+  }
+  gSystem->Exec(Form("convert %s*integrated_convergence*.png %srun%d_convergence.pdf",
+		     output_path.Data(),output_path.Data(),run_number));
+
+  gSystem->Exec(Form("rm %s*integrated_convergence*.png",output_path.Data()));
+  
+}
 
 void Integrated(TString treename, 
 		TString parameter,

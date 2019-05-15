@@ -1,3 +1,7 @@
+// Global ErrorFlag decoder 
+// author : Tao Ye
+// date : 05-2019
+
 #include "TError.h"
 
 void ErrorFlagDecoder(){
@@ -7,7 +11,7 @@ void ErrorFlagDecoder(){
   pad1->SetGridx();
   pad1->Draw();
   pad1->cd();
-  gErrorIgnoreLevel = kWarning+1;   // shut up warnings;
+  gErrorIgnoreLevel = kInfo;   // shut up warnings;
   gStyle->SetOptStat(0);
 
   // Copied from japan/QwTypes.h 
@@ -36,6 +40,10 @@ void ErrorFlagDecoder(){
   TH1D *hdec = new TH1D("hdec"," Global Error Flag Counter",nErrorTypes,0,nErrorTypes); 
   TH1D *htotal = new TH1D("htotal","Global Error Flag Counter",nErrorTypes,0,nErrorTypes); 
   Int_t ErrorCounter[nErrorTypes];
+
+  Double_t ErrorRatio[nErrorTypes];
+  TText* RatioText[nErrorTypes];
+
   TString ErrorSelection[nErrorTypes];
   TString ErrorLabel[nErrorTypes] = {"Good / Total",
 				     "Lower Limit",
@@ -75,9 +83,12 @@ void ErrorFlagDecoder(){
   for(int i=0;i<nErrorTypes;i++){
     int ibin = nErrorTypes-i;
     ErrorCounter[i] = evt_tree->Draw("ErrorFlag",ErrorSelection[i],"goff");
+    ErrorRatio[i] = (Double_t)ErrorCounter[i]/nTotal;
     hdec->SetBinContent(ibin,ErrorCounter[i]);
     htotal->GetXaxis()->SetBinLabel(ibin,ErrorLabel[i]);
   }
+
+
   htotal->GetYaxis()->SetTitle("Counts");
   htotal->GetXaxis()->SetLabelSize(0.05);
   htotal->SetBarWidth(0.8);
@@ -91,5 +102,11 @@ void ErrorFlagDecoder(){
   hdec->SetFillColor(49);
   hdec->Draw("hbar same ");
 
+  for(int i=0;i<nErrorTypes;i++){
+    TString mytext = Form("%.1f %%",ErrorRatio[i]*100);
+    RatioText[i] = new TText((hdec->GetBinContent(nErrorTypes-i))*1.05,(nErrorTypes-i-1)+0.2,mytext);
+    RatioText[i]->SetNDC(0);
+    RatioText[i]->Draw("same");
+  }
 
 }

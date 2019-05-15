@@ -1,7 +1,24 @@
-void CheckEventCut(TString strDeviceName){
+// author : Tao Ye
+// date : 05-2019
+// description: Macro for checking global event cuts
+#include "device_list.h"
 
-  const char* device_name = strDeviceName.Data();
+void CheckEventCut(const char*);
+void CheckEventCut();
 
+void CheckEventCut(){
+  TCanvas *c1 = new TCanvas("c1","c1",2400,600);
+  Int_t nbcm = vBCM.size();
+  for(int ibcm=0;ibcm<nbcm;ibcm++){
+    c1->cd();
+    CheckEventCut(vBCM[ibcm]);
+    plot_title = Form("run%d_check_EventCut_%s.png",run_number,vBCM[ibcm]);
+    c1->SaveAs(output_path+ plot_title);
+  } // end of BCM loop
+}
+
+void CheckEventCut(const char* device_name){
+  gStyle->SetOptStat(1);
   gStyle->SetStatW(0.3);
   gStyle->SetStatH(0.3);
   TTree *evt = (TTree*)gROOT->FindObject("evt");
@@ -36,15 +53,3 @@ void CheckEventCut(TString strDeviceName){
   h_buff = (TH1D*)pad_buff->FindObject("htemp");
   h_buff->SetName("PairTree");
 }
-
-
-
-
-
-
-
-
-
-
-
-
