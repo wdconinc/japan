@@ -1,3 +1,33 @@
+#include "device_list.h"
+void PlotBlocks1D(const char* device_name ,TString treeName);
+void PlotBlocks1D();
+
+void PlotBlocks1D(){
+  TCanvas *c2 = new TCanvas("c2","c2",1600,1600);
+
+  Int_t nblkm = vBlkM.size();  
+  TString treeNames[] = {"pr","mul"};
+  TString treeName;
+  ////========== 1D Blocks plots
+  for(int iTree = 0; iTree<2 ; iTree++){
+    treeName = treeNames[iTree];
+    for(int idev=0;idev<nblkm;idev++){
+      c2->Clear("D");
+      c2->cd();
+      PlotBlocks1D(vBlkM[idev],treeName);
+      plot_title = Form("run%d_%s_SubBlocks1D_%sTree.png",
+			run_number,vBlkM[idev],
+			treeName.Data());
+      TText *t1 = new TText(0.0,0.007,plot_title);
+      t1->SetNDC();
+      t1->SetTextSize(0.02);
+      c2->cd();
+      t1->Draw("same");
+      c2->SaveAs(output_path+plot_title);
+    } // end of device loop
+  }// end of tree loop
+}
+
 void PlotBlocks1D(const char* device_name ,TString treeName){
 
   TString draw_opt = "COLZ";

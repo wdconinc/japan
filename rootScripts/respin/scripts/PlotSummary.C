@@ -8,6 +8,7 @@
 #include "CheckEventCut.C"
 #include "CheckDeviceEventCut.C"
 #include "PlotBlocks.C"
+#include "PlotBlocks1D.C"
 #include "PlotInjBPMS.C"
 #include "PlotInjBPMSDr.C"
 #include "CheckBCMdd.C"
@@ -22,8 +23,8 @@ void PlotSummary(Int_t run_num){
   prefix = "prexRespin1";
   file_name = Form("%s_%d.root",prefix.Data(),run_number);
   TFile* rootfile = TFile::Open(path+file_name);
-  output_path = Form("./wac_test/run%d/",run_number);
-
+  output_path = Form("./summary_plots/run%d/",run_number);
+  TString pdf_filename;
   //===== Error Counter from Evt Tree =====   
   PlotErrorCounters();
   //===== Event Cuts Plots =====   
@@ -36,6 +37,7 @@ void PlotSummary(Int_t run_num){
   //===== BCM Double Difference Plots =====   
   CheckBCMdd();
   //===== SubBlocks Plots =====   
+  PlotBlocks1D();
   PlotBlocks();
   // ===== Integrated Convergence 
   Integrated();
@@ -46,7 +48,7 @@ void PlotSummary(Int_t run_num){
   //==== Injector BPMs Dx Dy Dr and Ellipticity ====
   PlotInjBPMS();
   PlotInjBPMSDr();
-  TString pdf_filename = Form("run%d_injector_BPM_diff.pdf",run_number);
+  pdf_filename = Form("run%d_injector_BPM_diff.pdf",run_number);
   gSystem->Exec(Form("convert %srun%d*injector_BPM*.png %s%s",
 		     output_path.Data(),
 		     run_number,
@@ -57,11 +59,11 @@ void PlotSummary(Int_t run_num){
 		     output_path.Data(),
 		     run_number)); 
 
-  gSystem->Exec(Form("pdfunite $(ls -rt %srun%d*.pdf) %srun%d_all.pdf",
-		     output_path.Data(),
-		     run_number,
-		     output_path.Data(),
-		     run_number));
+  // gSystem->Exec(Form("pdfunite $(ls -rt %srun%d*.pdf) %srun%d_all.pdf",
+  // 		     output_path.Data(),
+  // 		     run_number,
+  // 		     output_path.Data(),
+  // 		     run_number));
 
 }
 

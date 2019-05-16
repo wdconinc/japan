@@ -1,6 +1,6 @@
 void GetBeamNoise(Int_t run_num,TString treeName){
 
-  TString output_filename = Form("./summary/run%d/run%d_regression_summary_%sTree.txt",run_num,run_num,treeName.Data());
+  TString output_filename = Form("./summary_plots/run%d/run%d_regression_summary_%sTree.txt",run_num,run_num,treeName.Data());
   FILE *summary_txt = fopen(output_filename.Data(), "w");
 
   TFile* rootfile = TFile::Open(Form("./japanOutput/prexRespin1_%d_regress_%s.root",run_num,treeName.Data() ));

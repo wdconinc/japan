@@ -4,11 +4,6 @@
 
 #include "device_list.h"
 
-#ifndef _PLOTBLOCK1D_C_
-#define _PLOTBLOCK1D_C_
-#include "PlotBlocks1D.C"
-#endif
-
 void PlotBlocks(const char* device_name,TString treeName);
 void PlotBlocks();
 
@@ -35,33 +30,19 @@ void PlotBlocks(){
       t1->Draw("same");
       c2->SaveAs(output_path+plot_title);
     } // end of device loop
-
-    ////========== 1D Blocks plots
-    for(int idev=0;idev<nblkm;idev++){
-      c2->Clear("D");
-      c2->cd();
-      PlotBlocks1D(vBlkM[idev],treeName);
-      plot_title = Form("run%d_%s_SubBlocks1D_%sTree.png",
-			run_number,vBlkM[idev],
-			treeName.Data());
-      TText *t1 = new TText(0.0,0.007,plot_title);
-      t1->SetNDC();
-      t1->SetTextSize(0.02);
-      c2->cd();
-      t1->Draw("same");
-      c2->SaveAs(output_path+plot_title);
-    } // end of device loop
-
-    TString pdf_filename = Form("run%d_SubBlocks_%sTree.pdf",run_number,treeName.Data());
-    gSystem->Exec(Form("convert %srun%d*SubBlock*.png %s%s",
-		       output_path.Data(),
-		       run_number,
-		       output_path.Data(),
-		       pdf_filename.Data()));
-    gSystem->Exec(Form("rm %srun%d*SubBlock*.png",
-		       output_path.Data(),
-		       run_number)); 
   }
+
+  TString pdf_filename = Form("run%d_SubBlocks_%sTree.pdf",
+			      run_number,treeName.Data());
+  gSystem->Exec(Form("convert %srun%d*SubBlock*.png %s%s",
+		     output_path.Data(),
+		     run_number,
+		     output_path.Data(),
+		     pdf_filename.Data()));
+  gSystem->Exec(Form("rm %srun%d*SubBlock*.png",
+		     output_path.Data(),
+		     run_number)); 
+
 }
 
 void PlotBlocks(const char* device_name,TString treeName){

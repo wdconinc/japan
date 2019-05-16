@@ -1,11 +1,16 @@
-// Author : Tao Ye <tao.ye@stonybrook.edu>
-// Last update : 05-2019
+// PlotCorrelation.C : 
+//	ROOT script for multiple 2D correlation plots in matrix form
+//
+// author : Tao Ye <tao.ye@stonybrook.edu>
+// 	 05-2019o
+
 #include "device_list.h"
 
-void PlotCorrelation(vector<const char*> DVar, vector<const char*> IVar,
+void PlotCorrelation(vector<const char*> &DVar, vector<const char*> &IVar,
 		     TString treeName, 
 		     TString prefix1, TString prefix2,
-		     TString draw_opt);  // Generic
+		     TString draw_opt,
+		     TString user_cut);  // Generic
 
 void PlotCorrelation(Int_t magic_switch, 
 		     TString treeName, TString draw_opt); // interface to panguin
@@ -17,21 +22,23 @@ void PlotCorrelation(){
   TString treeNames[] = {"pr","mul"};
   TString treeName;
   TString draw_opts[] = {"COLZ","fit","scat"};
-  vector < vector<const char*> > Vdv={ vSAM,vSAM,vDitherBPM};
-  vector < vector<const char*> > Viv={ vSAM,vDitherBPM,vDitherBPM};
+  Int_t nsam = vSAM.size();
+  Int_t nbpm = vDitherBPM.size();
+  Int_t nDV[3]={nsam,nsam,nbpm};
+  Int_t nIV[3]={nsam,nbpm,nbpm};
   vector<const char* > vtag_dv ={"asym_sam","asym_sam","diff_bpm" };
   vector<const char*> vtag_iv ={"asym_sam","diff_bpm","diff_bpm" };
   vector<int> switch_key = {2,1,3};
   Int_t canvas_width = 600;
+  TCanvas* c_this = new TCanvas("","",800,800);
   for(int itree=0;itree<2;itree++){
     for(int iplot=0;iplot<3;iplot++){
       for(int iopt=0;iopt<3;iopt++){
-	int ny = Vdv[iplot].size();
-	int nx = Viv[iplot].size();
-	TCanvas* c_this = new TCanvas("","",(nx+1)*canvas_width,ny*canvas_width);
+	int ny = nDV[iplot];
+	int nx = nIV[iplot];
+	c_this->SetWindowSize((nx+1)*canvas_width,ny*canvas_width);
 	c_this->cd();
 	PlotCorrelation(switch_key[iplot],treeNames[itree],draw_opts[iopt]);
-
 	plot_title  = Form("run%d_%s_vs_%s-%s-%sTree.png",
 			   run_number,vtag_dv[iplot],vtag_iv[iplot],
 			   draw_opts[iopt].Data(),treeNames[itree].Data() );
@@ -42,6 +49,7 @@ void PlotCorrelation(){
 	c_this->cd();
 	label->Draw("same");
 	c_this->SaveAs(output_path+plot_title);
+	c_this->Clear("D");
       } // end of draw_opts loop
       gSystem->Exec(Form("convert %s/*%sTree.png %s/run%d_%s_vs_%s_%sTree.pdf",
 			 output_path.Data(),treeNames[itree].Data(),
@@ -61,28 +69,32 @@ void PlotCorrelation(Int_t magic_switch,
     PlotCorrelation(vSAM,vDitherBPM,
 		    treeName,
 		    "asym_","diff_",
-		    draw_opt);
+		    draw_opt,
+		    "ErrorFlag==0");
     break;
   case 2:
     PlotCorrelation(vSAM,vSAM,
 		    treeName,
 		    "asym_","asym_",
-		    draw_opt);
+		    draw_opt,
+		    "ErrorFlag==0");
     break;
   case 3:
     PlotCorrelation(vDitherBPM,vDitherBPM,
 		    treeName,
 		    "diff_","diff_",
-		    draw_opt);
+		    draw_opt,
+		    "ErrorFlag==0");
     break;
   
   }
 }
 
-void PlotCorrelation(vector<const char* > DVar_src, vector<const char*> IVar_src,
+void PlotCorrelation(vector<const char* > &DVar_src, vector<const char*> &IVar_src,
 		     TString treeName, 
 		     TString prefix_dv, TString prefix_iv,
-		     TString draw_opt){
+		     TString draw_opt,
+		     TString user_cut){
   gStyle->SetStatW(0.2);
   gStyle->SetStatH(0.2);
   gStyle->SetStatX(1);
@@ -115,7 +127,7 @@ void PlotCorrelation(vector<const char* > DVar_src, vector<const char*> IVar_src
   }
 
   TTree *tree = (TTree*)gROOT ->FindObject(treeName);
-  TString cuts = "ErrorFlag==0";
+  TString cuts = user_cut;
 
   TPad* pad1 = new TPad("pad1","pad1",0,0,1,1);
   pad1->Divide(nIVar+1, nDVar);

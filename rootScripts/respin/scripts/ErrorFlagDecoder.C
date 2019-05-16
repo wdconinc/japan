@@ -11,7 +11,7 @@ void ErrorFlagDecoder(){
   pad1->SetGridx();
   pad1->Draw();
   pad1->cd();
-  gErrorIgnoreLevel = kInfo;   // shut up warnings;
+  gErrorIgnoreLevel = kWarning+1;   // shut up warnings;
   gStyle->SetOptStat(0);
 
   // Copied from japan/QwTypes.h 

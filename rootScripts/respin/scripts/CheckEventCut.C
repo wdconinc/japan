@@ -13,7 +13,15 @@ void CheckEventCut(){
     c1->cd();
     CheckEventCut(vBCM[ibcm]);
     plot_title = Form("run%d_check_EventCut_%s.png",run_number,vBCM[ibcm]);
+
+    TText *t1 = new TText(0.0,0.007,plot_title);
+    t1->SetNDC();
+    t1->SetTextSize(0.02);
+    c1->cd();
+    t1->Draw("same");
+
     c1->SaveAs(output_path+ plot_title);
+    c1->Clear("D");
   } // end of BCM loop
 }
 

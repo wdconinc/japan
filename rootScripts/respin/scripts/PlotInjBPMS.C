@@ -7,7 +7,7 @@
 
 //FIXME : IHWPstatus should be able to obtain from slow tree. -TY
 
-void PlotInjBPMS(vector<const char*> vBPM , 
+void PlotInjBPMS(vector<const char*> &vBPM , 
 		 Int_t IHWPstatus, TString ucut);  // Generic function
 void PlotInjBPMS(Int_t IHWPstatus, TString ucut); // interface to panguin
 void PlotInjBPMS();// interface to summary plots
@@ -24,7 +24,7 @@ void PlotInjBPMS( Int_t IHWPstatus, TString ucut){
   PlotInjBPMS(vInjBPM,1,"ErrorFlag==0");
 } 
 
-void PlotInjBPMS(vector<const char*> vBPM , 
+void PlotInjBPMS(vector<const char*> &vBPM , 
 		 Int_t IHWPstatus, TString ucut){
 
   //collect data points from first run file

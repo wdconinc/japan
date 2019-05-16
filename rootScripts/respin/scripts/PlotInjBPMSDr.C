@@ -5,7 +5,7 @@
 
 #include "device_list.h"
 
-void PlotInjBPMSDr(vector<const char*> vBPM, 
+void PlotInjBPMSDr(vector<const char*> &vBPM, 
 		   Int_t IHWPstatus, TString ucut); // generic
 void PlotInjBPMSDr(Int_t IHWPstatus, TString ucut); // interface to panguin
 void PlotInjBPMSDr(); // interface to summary plots
@@ -21,7 +21,7 @@ void PlotInjBPMSDr(){
 void PlotInjBPMSDr(Int_t IHWPstatus, TString ucut){
   PlotInjBPMSDr(vInjBPM,IHWPstatus,ucut);
 }
-void PlotInjBPMSDr(vector<const char*> vBPM, 
+void PlotInjBPMSDr(vector<const char*> &vBPM, 
 		   Int_t IHWPstatus, TString ucut){
 
   //open first run file

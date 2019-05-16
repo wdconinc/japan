@@ -22,7 +22,15 @@ void CheckDeviceEventCut(){
 			  pattern_prefix[ichannel]);
       plot_title = Form("run%d_check_EventCut_%s.png",
 			run_number,bpm_channel.Data());
+
+      TText *t1 = new TText(0.0,0.007,plot_title);
+      t1->SetNDC();
+      t1->SetTextSize(0.02);
+      c1->cd();
+      t1->Draw("same");
+
       c1->SaveAs(output_path+ plot_title);
+      c1->Clear("D");
     }
   } // end of BPM loop
 
@@ -30,7 +38,15 @@ void CheckDeviceEventCut(){
     c1->cd();
     CheckDeviceEventCut(vSAM[isam],"asym_");
     plot_title = Form("run%d_check_EventCut_%s.png",run_number,vSAM[isam]);
+
+    TText *t1 = new TText(0.0,0.007,plot_title);
+    t1->SetNDC();
+    t1->SetTextSize(0.02);
+    c1->cd();
+    t1->Draw("same");
+
     c1->SaveAs(output_path+ plot_title);
+    c1->Clear("D");
   } // end of lumi loop
 }
 

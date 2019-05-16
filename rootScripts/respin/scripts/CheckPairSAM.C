@@ -1,6 +1,6 @@
 void CheckPairSAM(Int_t run_num,TString treeName){
 
-  TString output_dir = Form("./summary/run%d/",run_num);
+  TString output_dir = Form("./summary_plots/run%d/",run_num);
 
   TFile* rootfile = TFile::Open(Form("./japanOutput/prexRespin1_%d_regress_%s.root",run_num,treeName.Data()));
   TTree *tree = (TTree*)rootfile ->Get("reg");
