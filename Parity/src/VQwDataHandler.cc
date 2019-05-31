@@ -264,6 +264,9 @@ void VQwDataHandler::AccumulateRunningSum()
   }
 }
 
+//  This can be called for the fRunningSum or the fBurstSum objects;
+//  in either case it includes the current values in that particular
+//  running sum.
 void VQwDataHandler::AccumulateRunningSum(VQwDataHandler &value)
 {
   for (size_t i = 0; i < fOutputVar.size(); i++){
@@ -287,6 +290,37 @@ void VQwDataHandler::PrintRunningAverage()
 {
   if (fKeepRunningSum && (fRunningSum != NULL)){
     fRunningSum->PrintValue();
+  }
+}
+
+void VQwDataHandler::AccumulateBurstSum()
+{
+  if (fKeepBurstSum){
+    //  Create the running sum object if it doesn't exist.
+    if (fBurstSum == NULL){
+      fBurstSum = this->Clone();
+      fBurstSum->fKeepBurstSum = kFALSE;
+      fBurstSum->ClearEventData();
+    }
+    fBurstSum->AccumulateRunningSum(*this);
+  }
+}
+
+void VQwDataHandler::FinishBurst()
+{
+  if (fKeepBurstSum && (fBurstSum != NULL)){
+    for(size_t i = 0; i < fRunningSum->fOutputVar.size(); i++) {
+      // calling CalculateRunningAverage in scope of VQwHardwareChannel
+      fBurstSum->fOutputVar[i]->CalculateRunningAverage();
+    }
+    fBurstSum->PrintValue();
+  }
+}
+
+void VQwDataHandler::ClearBurstSum()
+{
+  if (fKeepBurstSum && (fBurstSum != NULL)){
+    fBurstSum->ClearEventData();
   }
 }
 

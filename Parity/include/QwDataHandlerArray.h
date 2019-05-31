@@ -122,6 +122,10 @@ class QwDataHandlerArray:  public std::vector<boost::shared_ptr<VQwDataHandler> 
 
     /// \brief Calculate the average for all good events
     void CalculateRunningAverage();
+    
+    void AccumulateBurstSum();
+    void FinishBurst();
+    void ClearBurstSum();
 
     /// \brief Report the number of events failed due to HW and event cut failures
     void PrintErrorCounters() const;

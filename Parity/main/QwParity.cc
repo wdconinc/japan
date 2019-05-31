@@ -315,6 +315,10 @@ Int_t main(Int_t argc, Char_t* argv[])
           if (helicitypattern.IsGoodAsymmetry()) {
 	    patternsum.AccumulateRunningSum(helicitypattern);
 
+	    // Process data handlers
+	    datahandlerarray.ProcessDataHandlerEntry();
+	    datahandlerarray.AccumulateBurstSum();
+
               // Fill histograms
               historootfile->FillHistograms(helicitypattern);
 
@@ -322,10 +326,15 @@ Int_t main(Int_t argc, Char_t* argv[])
               treerootfile->FillTreeBranches(helicitypattern);
               treerootfile->FillTree("mul");
 
+              // Fill regressed tree branches
+	      datahandlerarray.FillTreeBranches(treerootfile);
+
               // Burst mode
               if (helicitypattern.IsEndOfBurst()) {
                 helicitypattern.AccumulateRunningBurstSum();
                 helicitypattern.CalculateBurstAverage();
+
+		datahandlerarray.FinishBurst();
 
                 // Fill burst tree branches
                 burstrootfile->FillTreeBranches(helicitypattern.GetBurstYield());
@@ -335,13 +344,8 @@ Int_t main(Int_t argc, Char_t* argv[])
 
                 // Clear the data
                 helicitypattern.ClearBurstSum();
+		datahandlerarray.ClearBurstSum();
               }
-
-              // Process data handlers
-              datahandlerarray.ProcessDataHandlerEntry();
-	      
-              // Fill regressed tree branches
-	      datahandlerarray.FillTreeBranches(treerootfile);
 
               // Clear the data
               helicitypattern.ClearEventData();

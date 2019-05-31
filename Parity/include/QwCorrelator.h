@@ -40,6 +40,10 @@ class QwCorrelator : public VQwDataHandler, public MQwDataHandlerCloneable<QwCor
   void AccumulateRunningSum();
   void ProcessData(){};
   void CalcCorrelations();
+
+  void AccumulateBurstSum();
+  void FinishBurst();
+  void ClearBurstSum();
 		
  protected:
   bool fDisableHistos;

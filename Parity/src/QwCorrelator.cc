@@ -108,6 +108,18 @@ void QwCorrelator::CalcCorrelations()
 
 }
 
+void QwCorrelator::AccumulateBurstSum()
+{//  TODO: This should act like "AccumulateRunningSum()" but on the burst data bank
+};
+
+void QwCorrelator::FinishBurst()
+{//  TODO: This should act like "CalcCorrections()" but on the burst data bank
+};
+
+void QwCorrelator::ClearBurstSum()
+{//  TODO: This should clear the burst data bank to prepare it for a new burst
+};
+
 
 //******************************************************************************************************************************************************
 

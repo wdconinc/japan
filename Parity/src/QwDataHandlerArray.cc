@@ -493,6 +493,37 @@ void QwDataHandlerArray::AccumulateRunningSum()
   }
 }
 
+void QwDataHandlerArray::AccumulateBurstSum()
+{
+  if (!empty()) {
+    if (fDataSource->GetEventcutErrorFlag() == 0){
+      for (iterator handler = begin(); handler != end(); ++handler) {
+	VQwDataHandler* handler_parity = dynamic_cast<VQwDataHandler*>(handler->get());
+	handler_parity->AccumulateBurstSum();
+      }
+    }
+  }
+}
+
+void QwDataHandlerArray::FinishBurst()
+{
+  if (!empty()) {
+    for (iterator handler = begin(); handler != end(); ++handler) {
+      VQwDataHandler* handler_parity = dynamic_cast<VQwDataHandler*>(handler->get());
+      handler_parity->FinishBurst();
+    }
+  }
+}
+
+void QwDataHandlerArray::ClearBurstSum()
+{
+  if (!empty()) {
+    for (iterator handler = begin(); handler != end(); ++handler) {
+      VQwDataHandler* handler_parity = dynamic_cast<VQwDataHandler*>(handler->get());
+      handler_parity->ClearBurstSum();
+    }
+  }
+}
 
 void QwDataHandlerArray::AccumulateRunningSum(const QwDataHandlerArray& value)
 {
