@@ -1,9 +1,11 @@
 sudo: required
+language: go
 services:
 - docker
 
 script:
 - docker build -t jeffersonlab/japan .
+- go get go-hep.org/x/hep/groot/cmd/root-diff && root-diff -h
 
 after_success:
 - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
@@ -14,4 +16,3 @@ after_success:
     docker tag  jeffersonlab/japan jeffersonlab/japan:$TRAVIS_BRANCH ;
     docker push jeffersonlab/japan:$TRAVIS_BRANCH ;
   fi
-
