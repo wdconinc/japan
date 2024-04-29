@@ -16,9 +16,6 @@
 // System headers
 #include <vector>
 
-// Boost multi array
-#include <boost/multi_array.hpp>
-
 // ROOT headers
 #include "TTree.h"
 #include "TFile.h"

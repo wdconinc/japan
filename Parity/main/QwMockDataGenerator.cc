@@ -152,10 +152,10 @@ if(1==2){
 
 
   // Initialize randomness provider and distribution
-  boost::mt19937 randomnessGenerator(999); // Mersenne twister with seed (see below)
-  boost::normal_distribution<double> normalDistribution;
+  std::mt19937 randomnessGenerator(999); // Mersenne twister with seed (see below)
+  std::normal_distribution<double> normalDistribution;
   boost::variate_generator
-    < boost::mt19937, boost::normal_distribution<double> >
+    < std::mt19937, std::normal_distribution<double> >
       normal(randomnessGenerator, normalDistribution);
   // WARNING: This variate_generator will return the SAME random values as the
   // variate_generator in QwVQWK_Channel when used with the same default seed!

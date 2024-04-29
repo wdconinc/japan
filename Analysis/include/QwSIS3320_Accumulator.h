@@ -21,12 +21,10 @@
 #include <iostream>
 #include <vector>
 #include <numeric>
+#include <random>
 
 // ROOT headers
 #include <TTree.h>
-
-// Boost math library for random number generation
-#include <boost/random.hpp>
 
 // Qweak headers
 #include "VQwDataElement.h"

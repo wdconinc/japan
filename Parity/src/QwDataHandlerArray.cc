@@ -221,7 +221,7 @@ void QwDataHandlerArray::push_back(VQwDataHandler* handler)
             << " is not supported by this handler array" << QwLog::endl;
 
   } else {
-    boost::shared_ptr<VQwDataHandler> handler_tmp(handler);
+    std::shared_ptr<VQwDataHandler> handler_tmp(handler);
     HandlerPtrs::push_back(handler_tmp);
 
     // Set the parent of the handler to this array
@@ -239,23 +239,12 @@ void QwDataHandlerArray::DefineOptions(QwOptions &options)
   options.AddOptions()("datahandlers",
                        po::value<std::string>(),
                        "map file with datahandlers to include");
-
-  // Versions of boost::program_options below 1.39.0 have a bug in multitoken processing
-#if BOOST_VERSION < 103900
-  options.AddOptions()("DataHandler.disable-by-type",
-                       po::value<std::vector <std::string> >(),
-                       "handler types to disable");
-  options.AddOptions()("DataHandler.disable-by-name",
-                       po::value<std::vector <std::string> >(),
-                       "handler names to disable");
-#else // BOOST_VERSION >= 103900
   options.AddOptions()("DataHandler.disable-by-type",
                        po::value<std::vector <std::string> >()->multitoken(),
                        "handler types to disable");
   options.AddOptions()("DataHandler.disable-by-name",
                        po::value<std::vector <std::string> >()->multitoken(),
                        "handler names to disable");
-#endif // BOOST_VERSION
 }
 
 
@@ -335,7 +324,7 @@ void  QwDataHandlerArray::ClearEventData()
 {
   if (!empty()) {
     std::for_each(begin(), end(),
-		  boost::mem_fn(&VQwDataHandler::ClearEventData));
+		  std::mem_fn(&VQwDataHandler::ClearEventData));
   }
 }
 
@@ -344,7 +333,7 @@ void  QwDataHandlerArray::ClearEventData()
 void  QwDataHandlerArray::ProcessEvent()
 {
   if (!empty()){
-    std::for_each(begin(), end(), boost::mem_fn(&VQwDataHandler::ProcessData));
+    std::for_each(begin(), end(), std::mem_fn(&VQwDataHandler::ProcessData));
   }
 }
 
@@ -407,7 +396,7 @@ void  QwDataHandlerArray::ConstructHistograms(TDirectory *folder, TString &prefi
 void  QwDataHandlerArray::FillHistograms()
 {
   if (!empty())
-    std::for_each(begin(), end(), boost::mem_fn(&VQwDataHandler::FillHistograms));
+    std::for_each(begin(), end(), std::mem_fn(&VQwDataHandler::FillHistograms));
 }
 
 
@@ -606,7 +595,7 @@ void QwDataHandlerArray::PrintErrorCounters() const{// report number of events f
  * there is already a handler with that name in the array.
  * @param handler DataHandler to add to the array
  */
-void QwDataHandlerArray::push_back(boost::shared_ptr<VQwDataHandler> handler)
+void QwDataHandlerArray::push_back(std::shared_ptr<VQwDataHandler> handler)
 {
   
  if (handler.get() == NULL) {
@@ -626,7 +615,7 @@ void QwDataHandlerArray::push_back(boost::shared_ptr<VQwDataHandler> handler)
            << " is not supported by this handler array" << QwLog::endl;
 
  } else {
-   boost::shared_ptr<VQwDataHandler> handler_tmp(handler);
+   std::shared_ptr<VQwDataHandler> handler_tmp(handler);
    HandlerPtrs::push_back(handler_tmp);
 
 /*

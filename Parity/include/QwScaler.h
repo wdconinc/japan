@@ -5,9 +5,6 @@
 // System headers
 #include <vector>
 
-// Boost headers
-#include <boost/shared_ptr.hpp>
-
 // Qweak headers
 #include "VQwSubsystemParity.h"
 #include "QwScaler_Channel.h"

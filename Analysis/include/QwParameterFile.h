@@ -17,6 +17,7 @@
 #include <string>
 #include <map>
 #include <set>
+#include <filesystem>
 
 // ROOT headers
 #include "Rtypes.h"
@@ -29,14 +30,12 @@
 
 // Boost headers
 #include "boost/lexical_cast.hpp"
-#include "boost/filesystem/operations.hpp"
-#include "boost/filesystem/convenience.hpp"
-#include "boost/filesystem/path.hpp"
-namespace bfs = boost::filesystem;
 using boost::lexical_cast;
 
 // Qweak headers
 #include "QwLog.h"
+
+namespace fs = std::filesystem;
 
 ///
 /// \ingroup QwAnalysis
@@ -262,13 +261,13 @@ class QwParameterFile {
   private:
 
     /// Find the first file in a directory that conforms to the run label
-    int FindFile(const bfs::path& dir_path,    // in this directory,
+    int FindFile(const fs::path& dir_path,     // in this directory,
                  const std::string& file_stem, // search for this stem,
                  const std::string& file_ext,  // search for this extension,
-                 bfs::path& path_found);       // placing path here if found
+                 fs::path& path_found);       // placing path here if found
 
     /// Open a file
-    bool OpenFile(const bfs::path& path_found);
+    bool OpenFile(const fs::path& path_found);
   //  TString fCurrentSecName;     // Stores the name of the current section  read
   //  TString fCurrentModuleName;  // Stores the name of the current module  read
     TString fBestParamFileName;
@@ -285,7 +284,7 @@ class QwParameterFile {
   protected:
 
     // List of search paths
-    static std::vector<bfs::path> fSearchPaths;
+    static std::vector<fs::path> fSearchPaths;
 
     // Current run number
     static UInt_t fCurrentRunNumber;

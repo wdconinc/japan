@@ -15,10 +15,6 @@
 #include "TDirectory.h"
 #include "TTree.h"
 
-
-#include <boost/shared_ptr.hpp>
-#include <boost/mem_fn.hpp>
-
 // Qweak headers
 #include "MQwPublishable.h"
 #include "VQwSubsystem.h"
@@ -31,11 +27,11 @@ class QwParameterFile;
 ///
 /// \ingroup QwAnalysis
 class QwSubsystemArray:
-    public std::vector<boost::shared_ptr<VQwSubsystem>>,
+    public std::vector<std::shared_ptr<VQwSubsystem>>,
     public MQwPublishable<QwSubsystemArray, VQwSubsystem> {
 
  private:
-  typedef std::vector<boost::shared_ptr<VQwSubsystem> >  SubsysPtrs;
+  typedef std::vector<std::shared_ptr<VQwSubsystem> >  SubsysPtrs;
  public:
   using SubsysPtrs::const_iterator;
   using SubsysPtrs::iterator;
@@ -243,7 +239,7 @@ class QwSubsystemArray:
   /// \brief Print some information about the subsystem
   void PrintInfo() const;
   
-  void push_back(boost::shared_ptr<VQwSubsystem> subsys);
+  void push_back(std::shared_ptr<VQwSubsystem> subsys);
 
  protected:
   void LoadSubsystemsFromParameterFile(QwParameterFile& detectors);

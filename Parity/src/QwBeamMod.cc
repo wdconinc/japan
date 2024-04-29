@@ -30,7 +30,6 @@
 
 // Root plotting headers
 #include "TCanvas.h"
-#include "TF1.h"
 #include "TMath.h"
 
 // Register this subsystem with the factory

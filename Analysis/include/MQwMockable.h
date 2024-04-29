@@ -90,12 +90,12 @@ public:
   /// \name Parity mock data generation
   // @{
   /// Internal randomness generator
-  static boost::mt19937 fRandomnessGenerator;
+  static std::mt19937 fRandomnessGenerator;
   /// Internal normal probability distribution
-  static boost::normal_distribution<double> fNormalDistribution;
+  static std::normal_distribution<double> fNormalDistribution;
   /// Internal normal random variable
   static boost::variate_generator
-    < boost::mt19937, boost::normal_distribution<double> > fNormalRandomVariable;
+    < std::mt19937, std::normal_distribution<double> > fNormalRandomVariable;
   /// Flag to use an externally provided normal random variable
   bool fUseExternalRandomVariable;
   /// Externally provided normal random variable

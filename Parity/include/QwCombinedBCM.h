@@ -124,12 +124,12 @@ class QwCombinedBCM : public QwBCM<T> {
   /// \name Parity mock data generation
   // @{
   /// Internal randomness generator
-  static boost::mt19937 fRandomnessGenerator;
+  static std::mt19937 fRandomnessGenerator;
   /// Internal normal probability distribution
-  static boost::random::uniform_real_distribution<double> fDistribution;
+  static std::random::uniform_real_distribution<double> fDistribution;
   /// Internal normal random variable
   static boost::variate_generator
-    < boost::mt19937, boost::random::uniform_real_distribution<double> > fRandomVariable;
+    < std::mt19937, std::uniform_real_distribution<double> > fRandomVariable;
 public: 
   static void SetTripSeed(uint seedval){fRandomVariable.engine().seed(seedval);}
   // @}

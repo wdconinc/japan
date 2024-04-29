@@ -222,7 +222,7 @@ void QwSubsystemArray::push_back(VQwSubsystem* subsys)
             << " is not supported by this subsystem array" << QwLog::endl;
 
   } else {
-    boost::shared_ptr<VQwSubsystem> subsys_tmp(subsys);
+    std::shared_ptr<VQwSubsystem> subsys_tmp(subsys);
     SubsysPtrs::push_back(subsys_tmp);
 
     // Set the parent of the subsystem to this array
@@ -250,22 +250,12 @@ void QwSubsystemArray::DefineOptions(QwOptions &options)
                        po::value<std::string>()->default_value(""),
                        "map file with bad event ranges");
 
-  // Versions of boost::program_options below 1.39.0 have a bug in multitoken processing
-#if BOOST_VERSION < 103900
-  options.AddOptions()("disable-by-type",
-                       po::value<std::vector <std::string> >(),
-                       "subsystem types to disable");
-  options.AddOptions()("disable-by-name",
-                       po::value<std::vector <std::string> >(),
-                       "subsystem names to disable");
-#else // BOOST_VERSION >= 103900
   options.AddOptions()("disable-by-type",
                        po::value<std::vector <std::string> >()->multitoken(),
                        "subsystem types to disable");
   options.AddOptions()("disable-by-name",
                        po::value<std::vector <std::string> >()->multitoken(),
                        "subsystem names to disable");
-#endif // BOOST_VERSION
 }
 
 
@@ -378,7 +368,7 @@ void  QwSubsystemArray::ClearEventData()
     SetCodaEventNumber(0);
     SetCodaEventType(0);
     std::for_each(begin(), end(),
-		  boost::mem_fn(&VQwSubsystem::ClearEventData));
+		  std::mem_fn(&VQwSubsystem::ClearEventData));
   }
 }
 
@@ -431,9 +421,9 @@ Int_t QwSubsystemArray::ProcessEvBuffer(
 void  QwSubsystemArray::ProcessEvent()
 {
   if (!empty() && HasDataLoaded()) {
-    std::for_each(begin(), end(), boost::mem_fn(&VQwSubsystem::ProcessEvent));
-    std::for_each(begin(), end(), boost::mem_fn(&VQwSubsystem::ExchangeProcessedData));
-    std::for_each(begin(), end(), boost::mem_fn(&VQwSubsystem::ProcessEvent_2));
+    std::for_each(begin(), end(), std::mem_fn(&VQwSubsystem::ProcessEvent));
+    std::for_each(begin(), end(), std::mem_fn(&VQwSubsystem::ExchangeProcessedData));
+    std::for_each(begin(), end(), std::mem_fn(&VQwSubsystem::ProcessEvent_2));
   }
 }
 
@@ -441,7 +431,7 @@ void  QwSubsystemArray::AtEndOfEventLoop()
 {
   QwDebug << "QwSubsystemArray at end of event loop" << QwLog::endl;
   if (!empty()) {
-    std::for_each(begin(), end(), boost::mem_fn(&VQwSubsystem::AtEndOfEventLoop));
+    std::for_each(begin(), end(), std::mem_fn(&VQwSubsystem::AtEndOfEventLoop));
   }
 }
 
@@ -487,7 +477,7 @@ void  QwSubsystemArray::ConstructHistograms(TDirectory *folder, TString &prefix)
 void  QwSubsystemArray::FillHistograms()
 {
   if (!empty())
-    std::for_each(begin(), end(), boost::mem_fn(&VQwSubsystem::FillHistograms));
+    std::for_each(begin(), end(), std::mem_fn(&VQwSubsystem::FillHistograms));
 }
 
 void  QwSubsystemArray::ShareHistograms(const QwSubsystemArray& source)
@@ -522,7 +512,7 @@ void  QwSubsystemArray::ConstructTree(TDirectory *folder, TString &prefix)
 void  QwSubsystemArray::FillTree()
 {
   if (!empty())
-    std::for_each(begin(), end(), boost::mem_fn(&VQwSubsystem::FillTree));
+    std::for_each(begin(), end(), std::mem_fn(&VQwSubsystem::FillTree));
 }
 
 /**
@@ -531,7 +521,7 @@ void  QwSubsystemArray::FillTree()
 void  QwSubsystemArray::DeleteTree()
 {
   if (!empty())
-    std::for_each(begin(), end(), boost::mem_fn(&VQwSubsystem::DeleteTree));
+    std::for_each(begin(), end(), std::mem_fn(&VQwSubsystem::DeleteTree));
 }
 
 //*****************************************************************
@@ -749,7 +739,7 @@ TList* QwSubsystemArray::GetParamFileNameList(TString name) const
  * there is already a subsystem with that name in the array.
  * @param subsys Subsystem to add to the array
  */
-void QwSubsystemArray::push_back(boost::shared_ptr<VQwSubsystem> subsys)
+void QwSubsystemArray::push_back(std::shared_ptr<VQwSubsystem> subsys)
 {
   
  if (subsys.get() == NULL) {
@@ -769,7 +759,7 @@ void QwSubsystemArray::push_back(boost::shared_ptr<VQwSubsystem> subsys)
            << " is not supported by this subsystem array" << QwLog::endl;
 
  } else {
-   boost::shared_ptr<VQwSubsystem> subsys_tmp(subsys);
+   std::shared_ptr<VQwSubsystem> subsys_tmp(subsys);
    SubsysPtrs::push_back(subsys_tmp);
 
    // Set the parent of the subsystem to this array
